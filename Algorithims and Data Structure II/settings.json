@@ -1,0 +1,41 @@
+{
+    "workbench.colorTheme": "SynthWave '84",
+
+    //******************************************************************************************
+    //*                     INÍCIO DAS CONFIGURAÇÕES MANUAIS DO CODE RUNNER                    *
+    //******************************************************************************************
+
+    // Recommended settings for Code Runner with C/C++
+    "code-runner.runInTerminal": true,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.saveFileBeforeRun": true,
+    // Executor map for C and C++ using the portable MinGW toolchain
+    "code-runner.executorMap": {
+        "python": "python -u \"$fullFileName\"",
+        "c": "cd $dir && C:\\dev\\mingw64\\bin\\gcc.exe \"$fileName\" -o \"$fileNameWithoutExt.exe\" && .\\$fileNameWithoutExt.exe && del .\\$fileNameWithoutExt.exe",
+        "cpp": "cd $dir && C:\\dev\\mingw64\\bin\\g++.exe \"$fileName\" -o \"$fileNameWithoutExt.exe\" && .\\$fileNameWithoutExt.exe && del .\\$fileNameWithoutExt.exe"
+    },
+
+    //******************************************************************************************
+    //*                       FIM DAS CONFIGURAÇÕES MANUAIS DO CODE RUNNER                     *
+    //******************************************************************************************
+
+    "terminal.integrated.env.windows": {
+        "PYTHONIOENCODING": "utf-8",
+        "LANG": "en_US.UTF-8",
+        "CHCP": "65001"
+    },
+    "files.encoding": "utf8",
+    "C_Cpp.default.compilerPath": "C:\\dev\\mingw64\\bin",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "geminicodeassist.inlineSuggestions.enableAuto": false,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "github.copilot.selectedCompletionModel": "",
+    "diffEditor.codeLens": true,
+    "python.createEnvironment.trigger": "off"
+}
