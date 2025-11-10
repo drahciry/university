@@ -1,5 +1,5 @@
 /**
- * Classe que representa um homem, extensão de uma pessoa.
+ * Classe que representa um homem, extensão de uma {@code PessoaIMC}.
  * Possue atributos como:
  * Nome,
  * Sobrenome,

@@ -1,3 +1,9 @@
+/**
+ * Classe abstrata que representa uma Pessoa com 2 novos atributos:
+ * peso e altura. Desta forma, eh possivel calcular o IMC
+ * da Pessoa e a classificacao, porem, a classificacao depende do 
+ * sexo, portanto, este sera um metodo abstrato.
+ */
 public abstract class PessoaIMC extends Pessoa {
     /*************************************************************
      *                        ATRIBUTOS                          *
@@ -146,7 +152,7 @@ public abstract class PessoaIMC extends Pessoa {
     // Metodo toString(), padrao para exibicao de informacao.
     public String toString() {
         // Reutiliza o toString() da classe herdada.
-        return super.toString() + "\nPeso: " + peso + "\nAltura: " + altura;
+        return super.toString() + "\nPeso: " + peso + "\nAltura: " + altura + "\nIMC: " + calculaIMC();
     }
 
     /*************************************************************

@@ -23,7 +23,6 @@ public class Pessoa {
      * Atributo privado, estatico e constante, nao podendo ser alterado e nem acessado de fora da classe.
      */
     private static final Pattern NOME_VALIDO = Pattern.compile("^[\\p{L}\\s]+$");
-    private static int numPessoas = 0;
     private String nome;
     private String sobreNome;
     private LocalDate dataNasc;
@@ -47,7 +46,6 @@ public class Pessoa {
         setNome(nome);
         setSobreNome(sobreNome);
         setDataNasc(diaNasc, mesNasc, anoNasc);
-        numPessoas++;
     }
 
     /**
@@ -64,7 +62,6 @@ public class Pessoa {
         setNome(nome);
         setSobreNome(sobreNome);
         setDataNasc(diaNasc, mesNasc, anoNasc);
-        numPessoas++;
     }
 
     /**
@@ -78,11 +75,8 @@ public class Pessoa {
      * @param numCPF ({@code String}): Numero de CPF da {@code Pessoa}.
      */
     public Pessoa(String nome, String sobreNome, int diaNasc, int mesNasc, int anoNasc, String numCPF) {
-        setNome(nome);
-        setSobreNome(sobreNome);
-        setDataNasc(diaNasc, mesNasc, anoNasc);
+        this(nome, sobreNome, diaNasc, mesNasc, anoNasc);
         setNumCPF(numCPF);
-        numPessoas++;
     }
 
     /**
@@ -96,11 +90,8 @@ public class Pessoa {
      * @param numCPF ({@code String}): Numero de CPF da {@code Pessoa}.
      */
     public Pessoa(String nome, String sobreNome, String diaNasc, String mesNasc, String anoNasc, String numCPF) {
-        setNome(nome);
-        setSobreNome(sobreNome);
-        setDataNasc(diaNasc, mesNasc, anoNasc);
+        this(nome, sobreNome, diaNasc, mesNasc, anoNasc);
         setNumCPF(numCPF);
-        numPessoas++;
     }
 
     /*************************************************************
@@ -271,15 +262,6 @@ public class Pessoa {
     public int getIdade() {
         // Retorna realizando um calculo entre o periodo atual e o periodo informado.
         return Period.between(this.dataNasc, LocalDate.now()).getYears();
-    }
-
-    /**
-     * Getter para numero de objetos da classe {@code Pessoa} instanciados.
-     * 
-     * @return {@code int}: Retorna um int com o numero de pessoas instanciadas.
-     */
-    public static int getNumPessoas() {
-        return numPessoas;
     }
 
     // Método toString(), padrão para exibição de informação.

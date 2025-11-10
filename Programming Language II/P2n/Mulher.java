@@ -1,5 +1,5 @@
 /**
- * Classe que representa uma mulher, extensão de uma pessoa.
+ * Classe que representa uma mulher, extensão de uma {@code PessoaIMC}.
  * Possue atributos como:
  * Nome,
  * Sobrenome,
