@@ -6,14 +6,14 @@ Repository to save the projects, researchs and homeworks for university. Owners:
 
 Richard Gonçalves: 
 
-- [GitHub]https://github.com/drahciry
-- [LinkedIn]https://linkedin.com/in/drahciry/
+- [GitHub](https://github.com/drahciry)
+- [LinkedIn](https://linkedin.com/in/drahciry/)
 
 ## Daniel Folder Owner
 
 Daniel Quintão:
 
-- [GitHub]https://github.com/quintaodaniel
+- [GitHub](https://github.com/quintaodaniel)
 
 ## Have a question?
 
