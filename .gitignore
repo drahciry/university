@@ -1,1 +1,5 @@
 settings.json
+*.class
+*.exe
+requirements.txt
+environment.yml
