@@ -1,43 +1,34 @@
-def solucao(n: int, p: int) -> int:
+def mdc(a: int, b: int) -> int:
+    while b !=0:
+        resto = a % b
+        a = b
+        b = resto
 
-    def verifica(xi: int, yi: int, xf: int, yf: int) -> bool:
-        if (xi == xf):
-            if ((yi == yf - 1) or (yi == yf + 1)):
-                return True
-            return False
-        if (yi == yf):
-            if ((xi == xf - 1) or (xi == xf + 1)):
-                return True
-            return False
-        if ((xi - yi) == (xf - yf)):
-            if ((xi - xf) == (yi - yf)):
-                return True
-            return False
-        if ((xi + yi) == (xf + yf)):
-            if ((xi + xf) == (yi + yf)):
-                return True
-            return False
-        return True
+    return a
 
-    def backtrack(x: int, y: int, np: int) -> int:
-        M[x][y] = np
-        global cont_solucao
+def verifica(xi: int, yi: int, xf: int, yf: int) -> bool:
+    dist_linhas = abs(xi - xf)
+    dist_colunas = abs(yi - yf)
+    
+    return mdc(dist_linhas, dist_colunas) == 1
 
-        if (np == p):
-            cont_solucao += 1
-            return
-        
-        for i in range(n):
-            for j in range(n):
-                if verifica(x, y, i, j):
-                    if (M[i][j] != np - 1):
-                        backtrack(i, j, np + 1)
-                        M[i][j] = None
+def backtrack(x: int, y: int, np: int, n: int, p: int) -> int:
+    global cont_solucao
 
+    if (np == p):
+        cont_solucao += 1
+        return
+    
     for i in range(n):
         for j in range(n):
-            M = [[None for _ in range(n)] for _ in range(n)]
-            backtrack(i, j, 1)
+            if not verifica(x, y, i, j):
+                continue
+            backtrack(i, j, np + 1, n, p)
+
+def solucao(n: int, p: int) -> int:
+    for i in range(n):
+        for j in range(n):
+            backtrack(i, j, 1, n, p)
     
     return cont_solucao
 
