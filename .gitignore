@@ -3,3 +3,5 @@ settings.json
 *.exe
 requirements.txt
 environment.yml
+.vscode
+__pycache__

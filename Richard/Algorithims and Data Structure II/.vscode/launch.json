@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "(gdb) Debug C", // Just a name for this configuration
+      "type": "cppdbg", // The debugger type (C/C++ extension)
+      "request": "launch", // We want to launch the program
+      
+      // Path to your compiled executable file (e.g., main.exe)
+      // ${fileDirname} = the directory of the current file
+      // ${fileBasenameNoExtension} = the name of the current file without .c
+      "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+
+      "args": [], // Arguments to pass to your program, if any
+      "stopAtEntry": false, // If true, stops at the 'main' function
+      "cwd": "${fileDirname}", // Set the working directory
+      "environment": [],
+      "externalConsole": true, // Show a separate console for printf/scanf
+      "MIMode": "gdb", // We are using GDB
+      
+      // THIS IS THE MOST IMPORTANT LINE FOR YOUR ERROR
+      // It tells VS Code where to find gdb.exe
+      // If gdb.exe is in your PATH (Causa 2), just "gdb.exe" works.
+      // If not, you must provide the full path.
+      "miDebuggerPath": "gdb.exe", 
+      // Example full path (use double backslashes):
+      // "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      // This optional line runs a "build" task before debugging
+      "preLaunchTask": "C/C++: gcc.exe build active file"
+    }
+  ]
+}
