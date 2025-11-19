@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <math.h>
 
-char eh_possivel(int D, int VF, int VG) {
-    double dist_front = sqrt((12 * 12) + (D * D));
-    double time_VF = (12.0 / VF);
-    double time_VG = (dist_front / VG);
+char eh_possivel(int VF, int VG, int D) {
+    double tempo_guarda = 0.0;
+    double limite_tempo = (12.0 / VF);
+    double distG = sqrt((12.0 * 12.0) + (D * D));
 
-    return (time_VG <= time_VF) ? 'S' : 'N';
+    while (distG > 0) {
+        if (tempo_guarda > limite_tempo)
+            return 'N';
+        distG -= VG;
+        tempo_guarda++;
+    }
+
+    return (tempo_guarda <= limite_tempo) ? 'S' : 'N';
 }
 
 int main() {
@@ -14,7 +21,7 @@ int main() {
 
     while (scanf("%d", &D) != EOF) {
         scanf("%d %d", &VF, &VG);
-        printf("%c\n", eh_possivel(D, VF, VG));
+        printf("%c\n", eh_possivel(VF, VG, D));
     }
     return 0;
 }
