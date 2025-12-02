@@ -26,12 +26,11 @@ def solucao(convidados: list):
             if len(mesa) == 7:
                 if da_briga(mesa[0], convidado):
                     continue
-                
+
             mesa.append(convidado)
 
             if len(mesa) == 8:
                 print(mesa)
-                break
 
             backtrack()
             mesa.remove(convidado)
