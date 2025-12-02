@@ -3,27 +3,30 @@
 def solucao(convidados: list):
     mesa = []
 
+    def da_briga(a, b):
+        if (a  == "Putin" and b == "Zelensky") or (b  == "Putin" and a == "Zelensky"):
+            return True
+        if (a == "Valdermort" and b == "Harry Potter") or (b == "Valdermort" and a == "Harry Potter"):
+            return True
+        if (a == "Sherlock" and b == "Moriaty") or (b == "Sherlock" and a == "Moriaty"):
+            return True
+        if (a == "Jobs" and b == "Bill") or (b == "Jobs" and a == "Bill"):
+            return True
+        
+        return False
+
     def backtrack():
         for convidado in convidados:
             if convidado in mesa:
                 continue
-            if mesa[-1] == "Putin" and convidado == "Zelensky":
-                continue
-            elif mesa[-1] == "Valdermort" and convidado == "Harry Potter":
-                continue
-            elif mesa [-1] == "Sherlock" and convidado == "Moriaty":
-                continue
-            elif mesa[-1] == "Jobs" and convidado == "Bill":
-                continue
-            elif convidado == "Putin" and mesa[-1] == "Zelensky":
-                continue
-            elif convidado == "Valdermort" and mesa[-1] == "Harry Potter":
-                continue
-            elif convidado == "Sherlock" and mesa[-1] == "Moriaty":
-                continue
-            elif convidado == "Jobs" and mesa[-1] == "Bill":
+
+            if da_briga(mesa[-1], convidado):
                 continue
             
+            if len(mesa) == 7:
+                if da_briga(mesa[0], convidado):
+                    continue
+                
             mesa.append(convidado)
 
             if len(mesa) == 8:
