@@ -37,7 +37,7 @@ public class Emprest implements Serializable {
     }
 
     // Verifica se o livro esta pendente
-    public boolean isPendente() { return this.dataDevolucao == null }
+    public boolean isPendente() { return this.dataDevolucao == null; }
 
     // TO STRING
     // Sobrescreve o toString() para mostrar todas as informacoes
@@ -57,8 +57,8 @@ public class Emprest implements Serializable {
 
         // Concatenacao
         String output = " [CodLivro: " + codLivro + "]";
-        output += " Empréstimo: " + dataEmpStr;
-        output += " | Devolução: " + dataDevolStr;
+        output += " Emprestimo: " + dataEmpStr;
+        output += " | Devolucao: " + dataDevolStr;
         
         return output;
     }

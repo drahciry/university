@@ -35,8 +35,6 @@ public class Pessoa {
 
         // Inicializa os atributos nao fornecidos com zero
         this.numCPF = 0;
-        this.peso = 0.0f;
-        this.altura = 0.0f;
 
         // Incrementa o contador de instancias
         Pessoa.numPessoasCriadas++;
@@ -201,6 +199,6 @@ public class Pessoa {
                "--------------------------------\n" +
                "Nome Completo: " + this.nome + " " + this.sobreNome + "\n" +
                "Nascimento: " + dataFormatada + "\n" +
-               "CPF: " + cpfFormatado + "\n" +
+               "CPF: " + cpfFormatado + "\n";
     }
 }
