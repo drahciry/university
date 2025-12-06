@@ -23,13 +23,14 @@ public class Emprest {
 
     /**
      * Construtor basico.
-     * Composto de codigo do livro.
+     * Composto de codigo do livro e data de emprestimo do livro.
      * 
      * @param codigo ({@code int}): Codigo do livro emprestado.
-     */
-    public Emprest(int codigo) {
+     * @param dataEmprest ({@code LocalDate}): Data de emprestimo do livro.
+    */
+    public Emprest(int codigo, LocalDate dataEmprest) {
         setCodigo(codigo);
-        setDataEmprest();
+        setDataEmprest(dataEmprest);
     }
 
     /*************************************************************
@@ -39,12 +40,19 @@ public class Emprest {
     /**
      * Setter para data de emprestimo do livro.
      * 
-     * A data de emprestimo sempre sera "agora",
-     * no momento em que o objeto eh instanciado.
+     * @param data ({@code LocalDate}): Data de emprestimo do livro.
      */
-    private void setDataEmprest() {
-        // Define a data do "agora".
-        dataEmprest = LocalDate.now();
+    private void setDataEmprest(LocalDate data) {
+        this.dataEmprest = data;
+    }
+
+    /**
+     * Setter para data de devolucao do livro.
+     * 
+     * @param data ({@code LocalDate}): Data de devolucao do livro.
+     */
+    public void setDataDevol(LocalDate data) {
+        this.dataDevol = data;
     }
 
     /**

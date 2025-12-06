@@ -21,7 +21,7 @@ public class Livro {
     private Categoria categoria;
     private int disponiveis;
     private int emprestados;
-    private ArrayList<EmprestadoPara> hist;
+    private ArrayList<EmprestPara> hist = new ArrayList<EmprestPara>();
 
     /*************************************************************
      *                        CONSTRUTOR                         *
@@ -31,7 +31,7 @@ public class Livro {
      * Construtor basico.
      * Composto de codigo do livro, titulo do livro, categoria do livro e
      * quantidade disponivel de livro. A quantidade de livros emprestados
-     * se inicia em 0 (zero).
+     * se inicia em 0 (zero). Historico se inicia vazio.
      * 
      * @param codigo ({@code int}): Codigo do livro.
      * @param titulo ({@code String}): Nome do livro.
@@ -236,8 +236,27 @@ public class Livro {
      */
     public void addUsuarioList(LocalDate dataEmprest, LocalDate dataDevol, long numCPF) {
         // Instancia um objeto da classe EmprestadoPara que armazena as informacoes do usuario.
-        EmprestadoPara emprestadoPara = new EmprestadoPara(dataEmprest, dataDevol, numCPF);
+        EmprestPara emprestadoPara = new EmprestPara(dataEmprest, dataDevol, numCPF);
         // Adiciona as informacoes em um historico do livro.
         hist.add(emprestadoPara);
+    }
+
+    // Metodo toString(), padrao para exibicao de informacao.
+    public String toString() {
+        // StringBuilder foi utilizado para que seja possivel juntar
+        // todas informacoes do livro junto com o historico.
+        StringBuilder sb = new StringBuilder();
+        sb.append("Codigo do Livro: ").append(codigo);
+        sb.append("\nTitulo: ").append(titulo);
+        sb.append("\nCategoria: ").append(categoria);
+        sb.append("\nDisponiveis: ").append(disponiveis);
+        sb.append("\nEmpretados: ").append(emprestados);
+        sb.append("\n--- Historico ---\n");
+        // Passa o historico todo para o StringBuilder utilizando o toString do historico.
+        for (EmprestPara e : hist) {
+            sb.append(e.toString()).append("\n");
+        }
+        // Apos juntar tudo, retorna as informacoes.
+        return sb.toString();
     }
 }

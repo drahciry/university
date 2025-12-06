@@ -8,13 +8,13 @@ import java.time.LocalDate;
  * Data de Devolucao do Livro,
  * Numero de CPF do Usuario.
  */
-public class EmprestadoPara {
+public class EmprestPara {
     /*************************************************************
      *                        ATRIBUTOS                          *
     *************************************************************/
 
     private LocalDate dataEmprest;
-    private LocalDate dataDevol;
+    private LocalDate dataDevol = null;
     private long numCPF;
 
     /*************************************************************
@@ -30,7 +30,7 @@ public class EmprestadoPara {
      * @param dataDevol ({@code LocalDate}): Data de Devolucao do Livro.
      * @param numCPF ({@code long}): Numero de CPF do Usuario.
      */
-    public EmprestadoPara(LocalDate dataEmprest, LocalDate dataDevol, long numCPF) {
+    public EmprestPara(LocalDate dataEmprest, LocalDate dataDevol, long numCPF) {
         setDataEmprest(dataEmprest);
         setDataDevol(dataDevol);
         setNumCPF(numCPF);
@@ -92,5 +92,23 @@ public class EmprestadoPara {
      */
     public long getNumCPF() {
         return numCPF;
+    }
+
+    // Método toString(), padrão para exibição de informação.
+    public String toString() {
+        // Se a data de devolucao for null, entao a devolucao do livro esta pendente.
+        if (dataDevol == null) {
+            return (
+                "Usuario: " + numCPF +
+                "Data de Emprestimo: " + dataEmprest +
+                "Data de Devolucao: Pendente"
+            );    
+        }
+        // Senao, o livro ja foi devolvido e ha uma data de devolucao.
+        return (
+            "Usuario: " + numCPF +
+            "Data de Emprestimo: " + dataEmprest +
+            "Data de Devolucao: " + dataDevol
+        );
     }
 }
