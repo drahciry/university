@@ -66,7 +66,7 @@ public class EmprestPara implements Serializable {
             cpfFormatado = "Nao informado";
         }
         
-        return String.format(" | Usuário (CPF: %d) | Retirado: %s | Devolvido: %s", 
+        return String.format(" | Usuário (CPF: %s) | Retirado: %s | Devolvido: %s", 
                              cpfFormatado, dataEmpStr, dataDevolStr);
     }
 }
