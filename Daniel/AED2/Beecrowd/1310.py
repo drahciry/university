@@ -1,20 +1,46 @@
-def solucao(dias: int, cuto_diario: int, receias: list):
-    if dias == 0:
-        return 0
+def maior_soma(dias, lucros):
+    max_lucro = 0
+
+    for i in range(dias):
+        max_lucro_local = 0
+        for j in range(i, dias):
+            max_lucro_local += lucros[j]
+            if max_lucro_local > max_lucro:
+                max_lucro = max_lucro_local
     
-    lucros_diarios = [receias[i] - cuto_diario for i in range(dias)]
-    lucro_total = 0
-    lucro_atual = 0
+    return max_lucro
 
-    for i in lucros_diarios:
-        lucro_atual += i
+def ler_input():
+    while True:
+        try:
+            linha = input()
+            for token in linha.split():
+                yield token
+        except EOFError:
+            break
 
-        if lucro_atual <= 0:
-            lucro_atual = 0
-
-        if lucro_total < lucro_atual:
-            lucro_total = lucro_atual
+def main():
+    tokens = ler_input()
     
-    return lucro_total
+    while True:
+        try:
+            dias_str = next(tokens)
+            dias = int(dias_str)
+            
+            custo_str = next(tokens)
+            custo = int(custo_str)
+            
+            lucros = []
+            for _ in range(dias):
+                val_str = next(tokens)
+                val = int(val_str)
+                lucros.append(val - custo)
+            
+            resultado = maior_soma(dias, lucros)
+            print(resultado)
+            
+        except StopIteration:
+            break
 
-print(solucao(6, 20, [18, 35, 6, 80, 15, 21]))
+if __name__ == "__main__":
+    main()
