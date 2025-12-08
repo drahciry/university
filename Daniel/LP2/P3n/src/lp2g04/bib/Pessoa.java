@@ -1,10 +1,12 @@
-package lp2g04.bib
+package lp2g04.bib;
 
+import java.io.Serializable;
 // Bibliotecas utilizadas
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.io.Serializable;
 
-public class Pessoa {
+public class Pessoa implements Serializable {
     // (Atributos)
     private String nome;
     private String sobreNome;

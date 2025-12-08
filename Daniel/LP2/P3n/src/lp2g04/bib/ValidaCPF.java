@@ -1,3 +1,5 @@
+package lp2g04.bib;
+
 public class ValidaCPF {
     // Metodo que verifica se o formato de entrada eh valido e, caso seja, retorna apenas os digitos do CPF
     private static String normalizaCPF(String cpf){

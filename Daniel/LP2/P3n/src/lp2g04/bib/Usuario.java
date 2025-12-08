@@ -3,7 +3,6 @@ package lp2g04.bib;
 // Import utilizados
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import lp2g04.bib.Emprest;
 
 // Usuario que herda de Pessoa
 public class Usuario extends Pessoa{
@@ -14,9 +13,9 @@ public class Usuario extends Pessoa{
 
     // CONSTRUTORES
     // Construtor com a data como int
-    public Usuario(String nome, String sobrenome, int diaNasc, int mesNasc, int anoNasc, String cpf, String endereco) {
+    public Usuario(String nome, String sobreNome, int diaNasc, int mesNasc, int anoNasc, String cpf, String endereco) {
         // Usa o construtor pai
-        super(nome, sobreNome, diaNasc, mesNasc, anoNasc, cpf)
+        super(nome, sobreNome, diaNasc, mesNasc, anoNasc, cpf);
 
         // Atribuicoes
         this.endereco = endereco;
@@ -26,7 +25,7 @@ public class Usuario extends Pessoa{
     }
 
     // Construtor com a data como String (incluindo mes por extenso)
-    public Usuario(String nome, String sobrenome, String diaNasc, String mesNasc, String anoNasc, String cpf, String endereco) {
+    public Usuario(String nome, String sobreNome, String diaNasc, String mesNasc, String anoNasc, String cpf, String endereco) {
         // Mesma logica do construtor anterior
         super(nome, sobreNome, diaNasc, mesNasc, anoNasc, cpf); 
 
@@ -60,7 +59,7 @@ public class Usuario extends Pessoa{
     // TO STRING
     // Sobrescreve toString para mostrar as informacoes adicionais
     @Override
-    public toString() {
+    public String toString() {
         String output = super.toString(); // Informacoes compartilhadas com a classe Pai
 
         // Adiciona as novas informacoes

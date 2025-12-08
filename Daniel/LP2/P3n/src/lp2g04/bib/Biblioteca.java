@@ -2,7 +2,6 @@ package lp2g04.bib;
 
 import java.io.*;
 import java.util.*;
-import java.text.SimpleDateFormat;
 
 public class Biblioteca {
     // Campos para cadastro usando HashMap
@@ -41,12 +40,12 @@ public class Biblioteca {
     // --- METODOS DE CADASTRO ---
 
     public void cadastraUsuario(Usuario usuario) {
-        if (cadastroUsuarios.containsKey(usuario.getCpf())) {
+        if (cadastroUsuarios.containsKey(usuario.getNumCPF())) {
             // Decisao de projeto: Nao permitir sobrescrever
-            System.err.println("Erro: Ja existe um usuario com o CPF " + usuario.getCpf());
+            System.err.println("Erro: Ja existe um usuario com o CPF " + usuario.getNumCPF());
             return;
         }
-        cadastroUsuarios.put(usuario.getCpf(), usuario);
+        cadastroUsuarios.put(usuario.getNumCPF(), usuario);
     }
 
     public void cadastraLivro(Livro livro) {
@@ -111,7 +110,7 @@ public class Biblioteca {
 
         // Atualiza historico do Livro
         // null na data de devolucao indica que esta com o livro
-        livro.addUsuarioHist(dataEmp, null, usuario.getCpf());
+        livro.addUsuarioHist(dataEmp, null, usuario.getNumCPF());
 
         // Atualiza historico do Usuario
         usuario.addLivroHist(dataEmp, livro.getCodLivro());
@@ -130,7 +129,7 @@ public class Biblioteca {
         // Precisamos achar o registro "aberto" (dataDevolucao == null) para este usuario
         boolean achouNoLivro = false;
         for (EmprestPara registro : livro.getHist()) {
-            if (registro.getCpfUsuario() == usuario.getCpf() && registro.getDataDevolucao() == null) {
+            if (registro.getCpfUsuario() == usuario.getNumCPF() && registro.getDataDevolucao() == null) {
                 registro.setDataDevol(dataDevol);
                 achouNoLivro = true;
                 break; // Encontrou e atualizou, para.
@@ -184,7 +183,7 @@ public class Biblioteca {
         Collections.sort(lista, new Comparator<Usuario>() {
             @Override
             public int compare(Usuario u1, Usuario u2) {
-                return Long.compare(u1.getCpf(), u2.getCpf());
+                return Long.compare(u1.getNumCPF(), u2.getNumCPF());
             }
         });
 

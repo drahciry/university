@@ -1,6 +1,5 @@
 import lp2g04.bib.*; // Importa todas as classes
 import java.util.*;
-import java.io.*;
 
 public class P3nX {
 
@@ -41,7 +40,7 @@ public class P3nX {
                     executando = false;
                     System.out.println("Encerrando o sistema...");
                     break;
-                case 99: // Opção extra para gerar os dados de teste pedidos no PDF
+                case 99: // Opção extra para gerar os dados de teste
                     gerarDadosDeTeste();
                     break;
                 default:
@@ -114,13 +113,12 @@ public class P3nX {
     private static void salvarDados() {
         try { 
              // Chamada:
-             bib.salvarArquivo(bib.getCadastroUsuarios(), arqUsuarios);
-             bib.salvarArquivo(bib.getAcervoLivros(), arqLivros);
+             bib.salvaArquivo(bib.getCadastroUsuarios(), arqUsuarios);
+             bib.salvaArquivo(bib.getAcervoLivros(), arqLivros);
             
             System.out.println("Dados salvos com sucesso em " + arqUsuarios + " e " + arqLivros);
         } catch (Exception e) {
             System.out.println("Erro ao salvar: " + e.getMessage());
-            // e.printStackTrace(); // Debug
         }
     }
 
@@ -156,31 +154,36 @@ public class P3nX {
     private static void cadastrarUsuario() {
         try {
             System.out.println("\nNovo Usuário:");
-            String nome = lerString("Nome: ");
+            
+            // CORREÇÃO: Pede Nome e Sobrenome separados
+            String nome = lerString("Primeiro Nome: ");
+            String sobreNome = lerString("Sobrenome: ");
+            
             String cpfStr = lerString("CPF (apenas números): ");
             // Valida CPF antes de continuar
             if (!ValidaCPF.isCPF(cpfStr)) {
                 System.out.println("CPF Inválido! Cadastro cancelado.");
                 return;
             }
-            long cpf = Long.parseLong(cpfStr);
+            // OBS: Não converte para Long aqui, pois o construtor pede String
             
             String end = lerString("Endereço: ");
             String dataNascStr = lerString("Data Nascimento (dd/mm/aaaa): ");
             
-            // Converte Data
+            // CORREÇÃO: Divide a String da data para passar dia, mes e ano separados
             String[] partes = dataNascStr.split("/");
-            GregorianCalendar nasc = new GregorianCalendar(
-                Integer.parseInt(partes[2]), 
-                Integer.parseInt(partes[1]) - 1, // Calendar começa mês em 0
-                Integer.parseInt(partes[0])
-            );
+            if(partes.length != 3) {
+                 System.out.println("Formato de data inválido!");
+                 return;
+            }
 
-            // IMPORTANTE: Construtor de Usuario deve bater com o que você criou.
-            // Assumindo: Usuario(String nome, long cpf, GregorianCalendar nasc, String endereco)
-            // Se sua classe Usuario estende Pessoa e Pessoa pede (nome, nasc), a ordem pode variar.
-            // Ajuste aqui conforme seu construtor real.
-            Usuario u = new Usuario(nome, cpf, nasc, end);
+            int dia = Integer.parseInt(partes[0]);
+            int mes = Integer.parseInt(partes[1]);
+            int ano = Integer.parseInt(partes[2]);
+
+            // CORREÇÃO: Usa o construtor correto da classe Usuario
+            // Usuario(nome, sobrenome, dia, mes, ano, cpfString, endereco)
+            Usuario u = new Usuario(nome, sobreNome, dia, mes, ano, cpfStr, end);
             
             bib.cadastraUsuario(u);
             System.out.println("Usuário cadastrado com sucesso!");
@@ -280,12 +283,12 @@ public class P3nX {
     private static void gerarDadosDeTeste() {
         System.out.println("Gerando dados de exemplo para avaliação...");
         try {
-            // 5 Usuários
-            Usuario u1 = new Usuario("Ana Silva", 11111111111L, new GregorianCalendar(1990, 0, 1), "Rua A");
-            Usuario u2 = new Usuario("Beto Souza", 22222222222L, new GregorianCalendar(1995, 5, 15), "Rua B");
-            Usuario u3 = new Usuario("Carlos Lima", 33333333333L, new GregorianCalendar(1980, 11, 25), "Rua C");
-            Usuario u4 = new Usuario("Daniela Paz", 44444444444L, new GregorianCalendar(2000, 2, 10), "Rua D");
-            Usuario u5 = new Usuario("Eduardo Luz", 55555555555L, new GregorianCalendar(1985, 7, 7), "Rua E");
+            // CORREÇÃO: Atualizado para o novo construtor (Nome, Sobrenome, Dia, Mes, Ano, CPF String, Endereco)
+            Usuario u1 = new Usuario("Ana", "Silva", 1, 1, 1990, "11111111111", "Rua A");
+            Usuario u2 = new Usuario("Beto", "Souza", 15, 5, 1995, "22222222222", "Rua B");
+            Usuario u3 = new Usuario("Carlos", "Lima", 25, 12, 1980, "33333333333", "Rua C");
+            Usuario u4 = new Usuario("Daniela", "Paz", 10, 3, 2000, "44444444444", "Rua D");
+            Usuario u5 = new Usuario("Eduardo", "Luz", 7, 7, 1985, "55555555555", "Rua E");
 
             bib.cadastraUsuario(u1); bib.cadastraUsuario(u2); bib.cadastraUsuario(u3);
             bib.cadastraUsuario(u4); bib.cadastraUsuario(u5);
