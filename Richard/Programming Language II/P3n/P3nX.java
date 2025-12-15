@@ -194,9 +194,9 @@ public class P3nX {
         System.out.print("CPF (formato XXX.XXX.XXX-XX): "); String cpf = scanner.nextLine();
         System.out.print("Endereco: "); String end = scanner.nextLine();
         
-        System.out.print("Dia Nasc (1-31): "); int d = Integer.parseInt(scanner.nextLine());
-        System.out.print("Mes Nasc (1-12): "); int m = Integer.parseInt(scanner.nextLine());
-        System.out.print("Ano Nasc (AAAA): "); int a = Integer.parseInt(scanner.nextLine());
+        System.out.print("Dia Nasc (1-31): "); String d = scanner.nextLine();
+        System.out.print("Mes Nasc (1-12): "); String m = scanner.nextLine();
+        System.out.print("Ano Nasc (AAAA): "); String a = scanner.nextLine();
         
         System.out.print("Peso (ex: 70.5): "); float peso = Float.parseFloat(scanner.nextLine());
         System.out.print("Altura (ex: 1.75): "); float alt = Float.parseFloat(scanner.nextLine());
