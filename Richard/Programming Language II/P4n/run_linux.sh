@@ -1,10 +1,10 @@
 #!/bin/bash
 echo "=========================================="
-echo " Compilando e Executando Biblioteca (P3nX)"
+echo " Compilando e Executando Biblioteca (P4nX)"
 echo "=========================================="
 
 # Compila
-javac -d . P3nX.java GeraBases.java lp2g21/bib/*.java
+javac -d . P4nX.java GeraBases.java lp2g21/bib/*.java
 
 if [ $? -eq 0 ]; then
     # Verifica se precisa gerar bases
@@ -14,7 +14,7 @@ if [ $? -eq 0 ]; then
     fi
     
     # Executa
-    java P3nX
+    java P4nX
 else
     echo "[ERRO] Falha na compilacao."
 fi

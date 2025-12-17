@@ -1,3 +1,9 @@
+// Gostaria de pedir perdao pela falta de comentarios. Estive com o tempo muito apertado,
+// ate mesmo para que a interface grafica ficasse a melhor e mais interativa possivel,
+// e tambem porque tive bastante demanda no trabalho que acabou me exigindo um pouco mais.
+// Espero que isso nao seja um fator determinante e que de para entender completamente
+// o codigo que foi feito e a proposta.
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -7,8 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Properties;
 import java.io.FileInputStream;
-
-// Importando backend
 import lp2g21.bib.*;
 
 public class P4nX extends JFrame {
@@ -16,30 +20,26 @@ public class P4nX extends JFrame {
     private Biblioteca library;
     private JTabbedPane tabbedPane;
 
-    // --- Componentes Aba Usuarios ---
     private JTable tableUsersMaster;
     private DefaultTableModel modelUsersMaster;
-    private DefaultTableModel modelUserHistory; // Modelo para a tabela de historico
-    private JLabel lblDetailNome, lblDetailCpf, lblDetailEnd; // Labels para detalhes fixos
+    private DefaultTableModel modelUserHistory;
+    private JLabel lblDetailNome, lblDetailCpf, lblDetailEnd;
 
-    // --- Componentes Aba Livros ---
     private JTable tableBooksMaster;
     private DefaultTableModel modelBooksMaster;
     private DefaultTableModel modelBookHistory;
     private JLabel lblDetailTitulo, lblDetailCod, lblDetailCat;
 
-    // --- Componentes Movimentacao ---
     private JTextField txtMovCpf, txtMovCodLivro;
 
-    // --- Config ---
     private JTextField txtConfigDias, txtConfigMulta;
 
     public P4nX() {
         library = new Biblioteca();
         carregarConfigsIniciais();
 
-        setTitle("Sistema Bibliotecario Avancado (Master-Detail)");
-        setSize(1024, 700); // Tela um pouco maior para caber o split
+        setTitle("Sistema Bibliotecario");
+        setSize(1024, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -59,56 +59,43 @@ public class P4nX extends JFrame {
     private void initUI() {
         tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Usuarios (Master-Detail)", createUsersPanel());
-        tabbedPane.addTab("Livros (Master-Detail)", createBooksPanel());
+        tabbedPane.addTab("Usuarios", createUsersPanel());
+        tabbedPane.addTab("Livros", createBooksPanel());
         tabbedPane.addTab("Movimentacao", createMovimentacaoPanel());
         tabbedPane.addTab("Sistema", createSystemPanel());
 
         this.add(tabbedPane, BorderLayout.CENTER);
     }
 
-    // ========================================================================
-    //                        ABA USUARIOS (SPLIT PANE)
-    // ========================================================================
-    
     private JPanel createUsersPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        // 1. Tabela MASTER (Esquerda)
-        // Definimos as colunas e forçamos os tipos para a ordenacao funcionar (numeros como numeros)
         modelUsersMaster = new DefaultTableModel(new Object[]{"CPF", "Nome", "Sobrenome"}, 0) {
             @Override
             public boolean isCellEditable(int row, int col) { return false; }
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) return Long.class; // Ordenar CPF como numero
+                if (columnIndex == 0) return Long.class;
                 return String.class;
             }
         };
         
         tableUsersMaster = new JTable(modelUsersMaster);
-        // ATIVA A ORDENACAO AUTOMATICA
         tableUsersMaster.setAutoCreateRowSorter(true);
-        
-        // Listener de Selecao: Quando clicar na linha, atualiza a direita
         tableUsersMaster.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) atualizarDetalhesUsuario();
         });
 
         JScrollPane scrollMaster = new JScrollPane(tableUsersMaster);
 
-        // 2. Painel DETAIL (Direita)
         JPanel pnlDetail = new JPanel(new BorderLayout());
         pnlDetail.setBorder(BorderFactory.createTitledBorder("Detalhes do Usuario Selecionado"));
 
-        // 2.1 Dados Fixos (Topo da direita)
         JPanel pnlInfo = new JPanel(new GridLayout(3, 1));
         lblDetailNome = new JLabel("Nome: -");
         lblDetailCpf = new JLabel("CPF: -");
         lblDetailEnd = new JLabel("Endereco: -");
         pnlInfo.add(lblDetailNome); pnlInfo.add(lblDetailCpf); pnlInfo.add(lblDetailEnd);
-        
-        // 2.2 Tabela de Historico (Centro da direita)
+
         modelUserHistory = new DefaultTableModel(new Object[]{"Cod Livro", "Data Emprestimo", "Data Devolucao"}, 0);
         JTable tableHistory = new JTable(modelUserHistory);
         JScrollPane scrollHistory = new JScrollPane(tableHistory);
@@ -117,11 +104,9 @@ public class P4nX extends JFrame {
         pnlDetail.add(pnlInfo, BorderLayout.NORTH);
         pnlDetail.add(scrollHistory, BorderLayout.CENTER);
 
-        // 3. JSplitPane para dividir a tela
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollMaster, pnlDetail);
-        splitPane.setDividerLocation(400); // Tamanho inicial da esquerda
+        splitPane.setDividerLocation(400);
 
-        // 4. Botoes (Embaixo)
         JPanel btnPanel = new JPanel();
         JButton btnAdd = new JButton("Novo Usuario");
         JButton btnRefresh = new JButton("Recarregar Lista");
@@ -138,27 +123,22 @@ public class P4nX extends JFrame {
         return panel;
     }
 
-    // Logica para preencher o painel da direita ao clicar na esquerda
     private void atualizarDetalhesUsuario() {
         int viewRow = tableUsersMaster.getSelectedRow();
         if (viewRow == -1) return;
 
-        // Converter indice da view para o model (essencial por causa da ordenacao!)
         int modelRow = tableUsersMaster.convertRowIndexToModel(viewRow);
         long cpf = (long) modelUsersMaster.getValueAt(modelRow, 0);
 
         try {
             Usuario u = library.getUsuario(cpf);
-            
-            // Atualiza Labels
+
             lblDetailNome.setText("Nome: " + u.getNome() + " " + u.getSobreNome());
             lblDetailCpf.setText("CPF: " + u.getNumCPF());
             lblDetailEnd.setText("Endereco: " + u.getEndereco());
 
-            // Atualiza Tabela de Historico
-            modelUserHistory.setRowCount(0); // Limpa tabela
-            
-            // Requer o metodo getHistorico() criado no Usuario.java
+            modelUserHistory.setRowCount(0);
+
             for (Emprest e : u.getHistorico()) {
                 String devolucao = (e.getDataDevol() == null) ? "PENDENTE" : e.getDataDevol().toString();
                 modelUserHistory.addRow(new Object[]{
@@ -173,14 +153,9 @@ public class P4nX extends JFrame {
         }
     }
 
-    // ========================================================================
-    //                        ABA LIVROS (SPLIT PANE)
-    // ========================================================================
-
     private JPanel createBooksPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // 1. Master
         modelBooksMaster = new DefaultTableModel(new Object[]{"Codigo", "Titulo", "Disponivel"}, 0) {
             @Override
             public boolean isCellEditable(int row, int col) { return false; }
@@ -191,7 +166,7 @@ public class P4nX extends JFrame {
             }
         };
         tableBooksMaster = new JTable(modelBooksMaster);
-        tableBooksMaster.setAutoCreateRowSorter(true); // Ordenacao
+        tableBooksMaster.setAutoCreateRowSorter(true);
         
         tableBooksMaster.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) atualizarDetalhesLivro();
@@ -199,7 +174,6 @@ public class P4nX extends JFrame {
 
         JScrollPane scrollMaster = new JScrollPane(tableBooksMaster);
 
-        // 2. Detail
         JPanel pnlDetail = new JPanel(new BorderLayout());
         pnlDetail.setBorder(BorderFactory.createTitledBorder("Detalhes do Livro Selecionado"));
 
@@ -217,11 +191,9 @@ public class P4nX extends JFrame {
         pnlDetail.add(pnlInfo, BorderLayout.NORTH);
         pnlDetail.add(scrollHistory, BorderLayout.CENTER);
 
-        // 3. Split
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollMaster, pnlDetail);
         splitPane.setDividerLocation(400);
 
-        // 4. Botoes
         JPanel btnPanel = new JPanel();
         JButton btnAdd = new JButton("Novo Livro");
         JButton btnRefresh = new JButton("Recarregar Lista");
@@ -254,7 +226,6 @@ public class P4nX extends JFrame {
 
             modelBookHistory.setRowCount(0);
             
-            // Requer o metodo getHistorico() criado no Livro.java
             for (EmprestPara ep : l.getHistorico()) {
                 String devolucao = (ep.getDataDevol() == null) ? "PENDENTE" : ep.getDataDevol().toString();
                 modelBookHistory.addRow(new Object[]{
@@ -268,10 +239,6 @@ public class P4nX extends JFrame {
             ex.printStackTrace();
         }
     }
-
-    // ========================================================================
-    //                        ABA MOVIMENTACAO
-    // ========================================================================
 
     private JPanel createMovimentacaoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -302,14 +269,9 @@ public class P4nX extends JFrame {
         return panel;
     }
 
-    // ========================================================================
-    //                        ABA SISTEMA
-    // ========================================================================
-
     private JPanel createSystemPanel() {
         JPanel panel = new JPanel(new GridLayout(2, 1));
-        
-        // Arquivos
+
         JPanel pnlFiles = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         pnlFiles.setBorder(BorderFactory.createTitledBorder("Persistencia"));
         JButton btnSave = new JButton("Salvar Tudo");
@@ -319,8 +281,7 @@ public class P4nX extends JFrame {
         btnLoad.addActionListener(e -> acaoCarregar());
         
         pnlFiles.add(btnLoad); pnlFiles.add(btnSave);
-        
-        // Config
+
         JPanel pnlConfig = new JPanel(new FlowLayout());
         pnlConfig.setBorder(BorderFactory.createTitledBorder("Configuracoes"));
         txtConfigDias = new JTextField("7", 5);
@@ -344,13 +305,9 @@ public class P4nX extends JFrame {
         return panel;
     }
 
-    // ========================================================================
-    //                        METODOS AUXILIARES
-    // ========================================================================
-
     private void refreshUserTable() {
         modelUsersMaster.setRowCount(0);
-        modelUserHistory.setRowCount(0); // Limpa detalhes tambem
+        modelUserHistory.setRowCount(0);
         lblDetailNome.setText("Nome: -");
         
         HashMap<Long, Usuario> map = library.getAllUsers();
@@ -384,8 +341,8 @@ public class P4nX extends JFrame {
             int cod = Integer.parseInt(txtMovCodLivro.getText());
             library.emprestaLivro(library.getUsuario(cpf), library.getLivro(cod));
             JOptionPane.showMessageDialog(this, "Sucesso!");
-            refreshBookTable(); // Atualiza estoque visualmente
-            refreshUserTable(); // Atualiza historico visualmente se estiver selecionado
+            refreshBookTable();
+            refreshUserTable();
         } catch (Exception e) { JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage()); }
     }
     
@@ -394,7 +351,7 @@ public class P4nX extends JFrame {
             long cpf = Long.parseLong(txtMovCpf.getText());
             int cod = Integer.parseInt(txtMovCodLivro.getText());
             library.devolveLivro(library.getUsuario(cpf), library.getLivro(cod));
-            JOptionPane.showMessageDialog(this, "Devolvido! (Veja console para multas)");
+            JOptionPane.showMessageDialog(this, "Devolvido! (Veja terminal para multas)");
             refreshBookTable();
             refreshUserTable();
         } catch (Exception e) { JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage()); }
@@ -424,9 +381,7 @@ public class P4nX extends JFrame {
         } catch (Exception e) { JOptionPane.showMessageDialog(this, "Erro load"); }
     }
 
-    // Dialogs simples de cadastro (omitidos detalhes excessivos para brevidade)
     private void showAddUserDialog() {
-        // Implementacao simplificada para focar no Master-Detail
         String nome = JOptionPane.showInputDialog("Nome:");
         if(nome == null) return;
         String cpf = JOptionPane.showInputDialog("CPF (Numeros):");

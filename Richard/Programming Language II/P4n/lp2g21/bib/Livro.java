@@ -199,6 +199,15 @@ public class Livro implements Serializable {
     }
 
     /**
+     * Retorna o historico de usuarios que pegaram e devolveram o livro.
+     * 
+     * @return {@code ArrayList<Emprest>}: Retorna o historico do livro.
+     */
+    public ArrayList<EmprestPara> getHistorico() {
+	return this.hist;
+    }
+
+    /**
      * Metodo que empresta livros.
      * Atualiza a quantidade de livros disponiveis e quantidade de livros emprestados.
      * 

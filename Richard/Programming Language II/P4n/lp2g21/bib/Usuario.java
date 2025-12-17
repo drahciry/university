@@ -118,6 +118,15 @@ public class Usuario extends Pessoa {
         return null;
     }
 
+    /**
+     * Retorna o historico de livros emprestados e devolvidos do usuario.
+     * 
+     * @return {@code ArrayList<Emprest>}: Retorna o historico do usuario.
+     */
+    public ArrayList<Emprest> getHistorico() {
+	return this.hist;
+    }
+
     public void addLivroHist(int codigoLivro, LocalDate dataEmprest, LocalDate dataDevol) {
         // Cria o emprestimo.
         Emprest emprestimo = new Emprest(codigoLivro, dataEmprest, dataDevol);

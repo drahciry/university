@@ -1,10 +1,10 @@
 @echo off
 echo ==========================================
-echo  Compilando e Executando Biblioteca (P3nX)
+echo  Compilando e Executando Biblioteca (P4nX)
 echo ==========================================
 
 REM Compila todos os arquivos
-javac -d . P3nX.java GeraBases.java lp2g21/bib/*.java
+javac -d . P4nX.java GeraBases.java lp2g21/bib/*.java
 
 REM Verifica erro de compilacao
 if %errorlevel% neq 0 (
@@ -21,5 +21,5 @@ if not exist u.dat (
 )
 
 REM Executa o programa principal
-java P3nX
+java P4nX
 pause
