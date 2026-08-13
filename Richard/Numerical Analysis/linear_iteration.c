@@ -26,6 +26,7 @@ bool linear_iteration(double (*phi)(double), double x0, double tol, int max_iter
         x_current = x_next;
     }
 
+    printf("Warning: Iteration limit reached. The zero is unreliable.\n");
     *zero = x_current;
     return false;
 }
