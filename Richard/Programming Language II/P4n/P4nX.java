@@ -70,9 +70,7 @@ public class P4nX extends JFrame {
     private JPanel createUsersPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         modelUsersMaster = new DefaultTableModel(new Object[]{"CPF", "Nome", "Sobrenome"}, 0) {
-            @Override
             public boolean isCellEditable(int row, int col) { return false; }
-            @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 0) return Long.class;
                 return String.class;
@@ -157,9 +155,7 @@ public class P4nX extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
 
         modelBooksMaster = new DefaultTableModel(new Object[]{"Codigo", "Titulo", "Disponivel"}, 0) {
-            @Override
             public boolean isCellEditable(int row, int col) { return false; }
-            @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 0 || columnIndex == 2) return Integer.class;
                 return String.class;
