@@ -33,6 +33,8 @@ bool newton_raphson(double (*f)(double), double (*df)(double), double x0, double
 
         double error = fabs(x_next - x_current);
 
+        printf("Iteration: %2d | Error: %f | xk: %f | xk+1: %f\n", *iter, error, x_current, x_next);
+
         if (error < tol) {
             *zero = x_next;
             return true;
