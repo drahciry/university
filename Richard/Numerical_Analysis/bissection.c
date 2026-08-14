@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -14,7 +15,7 @@ bool bissection(double (*f)(double), double a, double b, double tol, int max_ite
     double f_m;
     *iter = 0;
 
-    while ((error > tol) && (*iter < max_iter)) {
+    while ((error >= tol) && (*iter < max_iter)) {
         (*iter)++;
 
         m = (a + b) / 2.0;
