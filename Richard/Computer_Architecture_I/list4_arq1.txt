@@ -1,0 +1,123 @@
+1.
+
+    .data
+
+    i: .word
+
+# -----------------------------------------------------
+# Função: sub(int a, int b)
+# -----------------------------------------------------
+sub:
+    sub $v0, $a0, $a1            # Subtrai primeiro argumento pelo segundo argumento e retorna
+    jr $ra                       # Retorna da função
+
+# -----------------------------------------------------
+# Função: compare(int a, int b)
+# -----------------------------------------------------
+compare:
+    addi $sp, $sp, -8            # Variáveis declaradas + 4 bytes $fp + 4 bytes $ra
+    sw $fp, 0($sp)               # Salva base da stack frame na pilha
+    sw $ra, 4($sp)               # Salva endereço de retorno na pilha
+    add $fp, $sp, $zero          # Nova base da stack frame compare
+
+    jal sub                      # Pula para label sub
+
+    slt $t0, $v0, $zero          # Se $v0 < 0, então $t0 = 1. Senão, $t0 = 0
+    xori $v0, $t0, 1             # Usa bitwise XOR para evitar pulos: se $v0 == 1, então 1 ^ 1 = 0
+
+    lw $fp, 0($sp)               # Carrega de volta base da stack frame anterior
+    lw $ra, 4($sp)               # Carrega de volta endereço de retorno para stack frame anterior
+    addi $sp, $sp, 8             # Destrói stack frame atual
+    jr $ra                       # Retorna da função
+
+# -----------------------------------------------------
+# Função: set_array(int num)
+# -----------------------------------------------------
+set_array:
+    addi $sp, $sp, -56           # Variáveis declaradas + 4 bytes $fp + 4 bytes $ra + 4 bytes $s0
+    sw $fp, 40($sp)              # Salva base da stack frame na pilha
+    sw $ra, 44($sp)              # Salva endereço de retorno na pilha
+    sw $s0, 48($sp)              # Salva valor de $s0 para preservar o valor já armazenado
+    sw $s1, 52($sp)              # Salva valor de $s1 para preservar o valor já armazenado
+    add $fp, $sp, $zero          # Nova base da stack frame set_array
+
+    add $s0, $sp, $zero          # $s0 = &array
+    add $s1, $a0, $zero          # $s1 = num
+
+    addi $t0, $zero, 0           # Zera registrador para iniciar contador
+    sw $t0, 0($gp)               # Atualiza valor na variável global i
+
+loop_start:
+    slti $t1, $t0, 10            # Se $t0 < 10, $t1. Senão, $t1 = 0
+    beq $t1, $zero, loop_end     # Se $t1 == 0, acaba com o loop_end
+
+    add $a0, $s1, $zero          # $a0 = num
+    add $a1, $t0, $zero          # $a1 = i
+
+    addi $sp, $sp, -4            # Desce 4 bytes na memória para salvar valor do contador
+    sw $t0, 0($sp)               # Preserva o valor do contador
+
+    jal compare                  # Pula para compare
+
+    lw $t0, 0($sp)               # Carrega de volta valor do contador
+    addi $sp, $sp, 4             # Sobe na pilha para retornar ao estado
+
+    sll $t1, $t0, 2              # $t1 = $t0 * 4, para alinhar memória
+    add $t1, $s0, $t1            # $t1 = &array[i]
+    sw $v0, 0($t1)               # array[i] = $v0
+
+    addi $t0, $t0, 1             # Incrementa contador
+    sw $t0, 0($gp)               # Atualiza valor na variável global i
+
+    j loop_start                 # Retorna para início do loop
+
+loop_end:
+    lw $fp, 40($sp)              # Carrega de volta base da stack frame anterior
+    lw $ra, 44($sp)              # Carrega de volta endereço de retorno para stack frame anterior
+    lw $s0, 48($sp)              # Carrega de volta valor preservado de $s0
+    lw $s1, 52($sp)              # Carrega de volta valor preservado de $s1
+    addi $sp, $sp, 56            # Destrói stack frame atual
+    jr $ra                       # Retorna da função
+
+2.
+
+j Loop_Condition         # Vá para Loop_Condition (salto incondicional)
+
+Loop:
+    addi $s3, $s3, 1     # i = i + 1
+
+Loop_Condition:
+    tgeu $s3, $s7        # Se i >= save.length, então encerra programa
+
+    sll $t1, $s3, 2      # $t1 = i * 4
+    add $t1, $t1, $s6    # $t1 = Offset + Endereço base de save
+    lw $t0, 0($t1)       # $t0 = save[i]
+
+    beq $t0, $s5, Loop   # Se save[i] == k, então vá para Loop
+
+Quantidade de instruções antes da otimização: 64
+Quantidade de instruções depois da otimização: 66
+
+3.
+
+add $t0, $zero, $zero        # i = 0
+j loop_condition                           
+
+loop_start:
+    sll $t1, $t0, 2            # $t1 = i * 4
+
+    add $t2, $t1, $a1          # $t2 = Endereço base de b + Offset
+    lw $t2, 0($t2)             # $t2 = b[i]
+
+    add $t3, $t2, $s0          # $t3 = b[i] + c
+
+    add $t2, $t1, $a0          # $t2 = Endereço base de a + Offset
+    sw $t3, 0($t2)             # a[i] = $t3
+
+    addi $t0, $t0, 1           # i = i + 1
+
+loop_condition:
+    slti $t7, $t0, 101         # Se $t0 < 101, então $t7 = 1. Senão, $t7 = 0
+    bne $t7, $zero, loop_start # Se $t7 != 0, vá para loop_start
+
+Serão executadas 913 instruções. Serão feitas 202 referências à memória.

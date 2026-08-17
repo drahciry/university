@@ -1,0 +1,150 @@
+1)
+
+sll $t0, $t3, 9
+srl $t0, $t0, 14
+
+2)
+
+ori $t1, $t0, 0x19
+
+3)
+
+        add $t0, $zero, $zero  # Zera o registrador
+loop:   beq $a1, $zero, finish # Condicional de quebra do loop: enquanto $a1 for diferente de 0, continua
+        add $t0, $t0, $a0      # Acumula o valor de $a0 em $t0 a cada iteração
+        subi $a1, $a1, 1       # Decrementa em 1 (immediate) em $a1
+        j loop                 # Pula para o início do loop
+finish: addi $t0, $t0, 100     # Ao encerrar o loop, incrementa em 100 em $t0
+        add $v0, $t0, $zero    # Move o valor para o registrador de saída
+
+Este trecho caracteriza um loop que poderia ser escrito da seguinte maneira em C:
+
+int frame(int a, int b) {
+    int temp = 0;
+
+    for (; b > 0; b--) {
+        temp += a;
+    }
+
+    temp += 100;
+
+    return temp;
+}
+
+4)
+
+       sll $a2, $a2, 2       # Desloca os bits para esquerda duas vezes (multiplica por 4)
+       sll $a3, $a3, 2       # Desloca os bits para esquerda duas vezes (multiplica por 4)
+       add $v0, $zero, $zero # Zera o registrador $v0
+       add $t0, $zero, $zero # Zera o registrador $t0
+outer: add $t4, $a0, $t0     # Copia o endereço do array em $a0 + $t0 (base mais offset) para $t4
+       lw $t4, 0($t4)        # Carrega da memória o valor no atual endereço para $t4
+       add $t1, $zero, $zero # Zera o registrador $t1
+inner: add $t3, $a1, $t1     # Copia o endereço do array em $a1 + $t1 (base mais offset) para $t3
+       lw $t3, 0($t3)        # Carrega da memória o valor no atual endereço para $t3
+       bne $t3, $t4, skip    # Compara os valores em $t3 e $t4 e caso sejam diferentes, pula para "skip"
+       addi $v0, $v0, 1      # Incrementa em 1 (immediate) em $v0
+skip:  addi $t1, $t1, 4      # Incrementa em 4 (immediate) em $t1, avançando um endereço no array $a1
+       bne $t1, $a3, inner   # Se a posição atual for diferente do tamanho do array, pula para "inner"
+       addi $t0, $t0, 4      # Incrementa em 4 (immediate) em $t0, avançando um endereço no array $a0
+       bne $t0, $a2, outer   # Se a posição atual for diferente do tamanho do array, pula para "outer"
+
+int frame(int* arr1, int* arr2, int arr1Size, int arr2Size) {
+    int ret = 0;
+    
+    for (int i = 0; i < arr1Size; i++) {
+        int temp1 = arr1[i];
+
+        for (int j = 0; j < arr2Size; j++) {
+            int temp2 = arr2[i];
+            if (temp1 != temp2) continue;
+            ret++;
+        }
+    }
+
+    return ret;
+}
+
+5)
+
+       sll $a2, $a2, 2       | 1 ciclo
+       sll $a3, $a3, 2       | 1 ciclo
+       add $v0, $zero, $zero | 1 ciclo
+       add $t0, $zero, $zero | 1 ciclo
+outer: add $t4, $a0, $t0     | 1 ciclo  \
+       lw $t4, 0($t4)        | 2 ciclos  \
+       add $t1, $zero, $zero | 1 ciclo    \
+inner: add $t3, $a1, $t1     | 1 ciclo     \
+       lw $t3, 0($t3)        | 2 ciclos     \
+       bne $t3, $t4, skip    | 2 ciclos      | No pior caso, ocorrerão 2.500 x 2.500 iterações, porém somente no loop mais interno (o "inner")
+       addi $v0, $v0, 1      | 1 ciclo      /
+skip:  addi $t1, $t1, 4      | 1 ciclo     /
+       bne $t1, $a3, inner   | 2 ciclos   /
+       addi $t0, $t0, 4      | 1 ciclo   /
+       bne $t0, $a2, outer   | 2 ciclos /
+
+O loop mais interno possui 9 ciclos, então o loop mais interno consome 9 x 2.500 x 2.500 ciclos no pior caso.
+O loop mais externo possui 7 ciclos, então o loop mais externo consome 7 x 2.500 ciclos no pior caso.
+Fora do loop há um consumo de 4 ciclos.
+
+Chamarei o total de ciclos de Tc.
+
+Tc = 2500 x (9 x 2500 + 7) + 4
+Tc = 2500 x 22507 + 4
+Tc = 56.267.504 ciclos
+
+Como a frequência do processador é 2 GHz, o período de um ciclo é 1/(2 x 10^9) segundos. Basta multiplicar pelo total de ciclos.
+Chamarei o tempo total de t.
+
+t = 56267504 / (2 x 10^9)
+t = 0.028133752 segundos
+
+O tempo gasto no pior caso é de 28ms.
+
+6)
+
+        add $v0, $zero, $zero
+loop:   lw $v1, 0($a0)
+        sw $v1, 0($a1)
+        addi $a0, $a0, 4
+        addi $a1, $a1, 4
+        beq $v1, $zero, finish
+        addi $v0, $v0, 1
+        j loop
+finish:
+
+int word_cpy_bug(int* source, int* dest) {
+    int count = 0;
+    int temp;
+
+    while (1) {
+        temp = *source;
+        *dest = temp;
+
+        source++;
+        dest++;
+
+        if (temp == 0) continue;
+    }
+
+    return count;
+}
+
+int word_cpy(int* source, int* dest) {
+    int count = 0;
+    int temp;
+
+    while (1) {
+        temp = *source;
+        *dest = temp;
+
+        source++;
+        dest++;
+
+        if (temp == 0) break;
+        
+        count++;
+    }
+
+    return count;
+}

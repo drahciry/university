@@ -1,0 +1,288 @@
+1.
+
+Disposição Big-endian
+
+0x00000000 = ab
+0x00000001 = cd
+0x00000002 = ef
+0x00000003 = 12
+
+Disposição Little-endian
+
+0x00000000 = 12
+0x00000001 = ef
+0x00000002 = cd
+0x00000003 = ab
+
+2.
+
+A = 00101100
+B = 01011111
+C = 01011010
+D = 01110111
+
+a) A | B | C | D
+
+01111111 = 0x0000007F
+
+b) A & B & C & D
+
+00000000 = 0x00000000
+
+c) ~(A | B) & ~(C | D)
+
+~(01111111) + ~(01111111)
+10000000 + 10000000
+10000000 = 0x00000080
+
+d) ~(A & B) ^ ~(C & D)
+
+~(00001100) ^ ~(01010010)
+11110011 ^ 10101101
+01011110 = 0x0000005E
+
+3.
+
+a)
+
+IPS = Clock / CPI
+
+IPS(P1) = 3,00 * 10^9 Hz / 1,50 = 2,00 * 10^9
+IPS(P2) = 2,50 * 10^9 Hz / 1,00 = 2,50 * 10^9
+IPS(P3) = 4,00 * 10^9 Hz / 2,20 = 1,82 * 10^9
+
+Portanto, P2 tem o melhor desempenho.
+
+b)
+
+Total de Ciclos = T * Clock
+Total de Ciclos = IPS * T * CPI
+Total de Instruções = Ciclos / CPI
+Total de Instruções = IPS * T
+
+P1: Total de Ciclos = 3,00 * 10^10 | Total de Instruções: 2,00 * 10^10
+P2: Total de Ciclos = 2,50 * 10^10 | Total de Instruções: 2,50 * 10^10
+P3: Total de Ciclos = 4,00 * 10^10 | Total de Instruções: 1,82 * 10^10
+
+c)
+
+T = Instruções * CPI / Clock
+T / (Instruções * CPI) = ClockA
+0,70 * T = Instruções * 1,20 * CPI / ClockN
+0,70 / ClockA = 1,20 / ClockN
+
+Para P1:
+
+0,70 / 3 = 1,20 / Clock
+Clock = 36 / 7 = 5,14 GHz
+
+Para P2:
+
+0,70 / 2,50 = 1,20 / Clock
+Clock = 30 / 7 = 4,29 GHz
+
+Para P3:
+
+0,70 / 4 = 1,20 / Clock
+Clock = 48 / 7 = 6,86 GHz
+
+4.
+
+a)
+
+Ttotal = TA + TB + TC + TD
+T = Instruções * CPI / Clock
+CPI Global = Somatório(Frequência-i * CPI-i)
+
+Para P1:
+
+CPI Global = 0,10 * 1 + 0,20 * 2 + 0,50 * 3 + 0,20 * 3
+CPI Global = 2,60
+
+Ttotal = 1.000.000 * 2,60 / (2,50 * 10^9)
+Ttotal = 2.600.000 / (2,50 * 10^9)
+Ttotal = 1,04 * 10^(-3)
+
+Para P2:
+
+Obs: como P2 possui o mesmo CPI para todas as classes, o CPI global é o mesmo das classes.
+
+Ttotal = 1.000.000 * 2 / (3,00 * 10^9)
+Ttotal = 2.000.000 / (3,00 * 10^9)
+Ttotal = 6,67 * 10^(-4)
+
+O tempo total de P2 é menor que o tempo total de P1.
+
+b)
+
+Total de Ciclos = Instruções * CPI
+
+Para P1:
+
+Total de Ciclos = 1.000.000 * 2,60
+Total de Ciclos = 2,60 * 10^6
+
+Para P2:
+
+Total de Ciclos = 1.000.000 * 2
+Total de Ciclos = 2,00 * 10^6
+
+5.
+
+a)
+
+T = (Total de Ciclos) / Clock
+Total de Ciclos = Somatório(IC-i * CPI-i)
+
+ICarit = 2,59 * 10^9
+ICls = 1,28 * 10^9
+ICdes = 0,256 * 10^9
+
+Ciclos(1) = (2,59 * 10^9 * 1) + (1,28 * 10^9 * 12) + (0,256 * 10^9 * 5)
+Ciclos(1) = 19,23 * 10^9
+
+T(1) = 19,23 * 10^9 / (2,00 * 10^9)
+T(1) = 9,615
+
+Execução paralela:
+
+Ciclos(p) = (2,59 * 10^9 * 1) / (0,70 * p) + (1,28 * 10^9 * 12) / (0,70 * p) + (0,256 * 10^9 * 5)
+Aceleração = T(1) / T(p)
+
+Ciclos(2) = (2,59 * 10^9 * 1) / (0,70 * 2) + (1,28 * 10^9 * 12) / (0,70 * 2) + (0,256 * 10^9 * 5)
+Ciclos(2) = (2,59 * 10^9 / 1,40) + (15,36 * 10^9 / 1,40) + (1,28 * 10^9)
+Ciclos(2) = 14,10 * 10^9
+
+T(2) = 14,10 * 10^9 / (2,00 * 10^9)
+T(2) = 7,050
+
+Aceleração(2) = 9,615 / 7,050
+Aceleração(2) = 1,36x
+
+Ciclos(4) = (2,59 * 10^9 * 1) / (0,70 * 4) + (1,28 * 10^9 * 12) / (0,70 * 4) + (0,256 * 10^9 * 5)
+Ciclos(4) = (2,59 * 10^9 / 2,80) + (15,36 * 10^9 / 2,80) + (1,28 * 10^9)
+Ciclos(4) = 7,69 * 10^9
+
+T(4) = 7,69 * 10^9 / (2,00 * 10^9)
+T(4) = 3,845
+
+Aceleração(4) = 9,615 / 3,845
+Aceleração(4) = 2,50x
+
+Ciclos(8) = (2,59 * 10^9 * 1) / (0,70 * 8) + (1,28 * 10^9 * 12) / (0,70 * 8) + (0,256 * 10^9 * 5)
+Ciclos(8) = (2,59 * 10^9 / 5,60) + (15,36 * 10^9 / 5,60) + (1,28 * 10^9)
+Ciclos(8) = 4,49 * 10^9
+
+T(8) = 4,49 * 10^9 / (2,00 * 10^9)
+T(8) = 2,243
+
+Aceleração(8) = 9,615 / 2,242
+Aceleração(8) = 4,29x
+
+b)
+
+Ciclos(1) = (2,59 * 10^9 * 2) + (1,28 * 10^9 * 12) + (0,256 * 10^9 * 5)
+Ciclos(1) = 21,82 * 10^9
+
+T(1) = 21,82 * 10^9 / (2,00 * 10^9)
+T(1) = 10,910
+Impacto de +1,295 segundos
+
+Ciclos(2) = (2,59 * 10^9 * 2) / (0,70 * 2) + (1,28 * 10^9 * 12) / (0,70 * 2) + (0,256 * 10^9 * 5)
+Ciclos(2) = (5,18 * 10^9 / 1,40) + (15,36 * 10^9 / 1,40) + (1,28 * 10^9)
+Ciclos(2) = 15,95 * 10^9
+
+T(2) = 15,95 * 10^9 / (2,00 * 10^9)
+T(2) = 7,975
+Impacto de +0,925 segundos
+
+Ciclos(4) = (2,59 * 10^9 * 2) / (0,70 * 4) + (1,28 * 10^9 * 12) / (0,70 * 4) + (0,256 * 10^9 * 5)
+Ciclos(4) = (5,18 * 10^9 / 2,80) + (15,36 * 10^9 / 2,80) + (1,28 * 10^9)
+Ciclos(4) = 8,62 * 10^9
+
+T(4) = 8,62 * 10^9 / (2,00 * 10^9)
+T(4) = 4,308
+Impacto de +0,463 segundos
+
+Ciclos(8) = (2,59 * 10^9 * 2) / (0,70 * 8) + (1,28 * 10^9 * 12) / (0,70 * 8) + (0,256 * 10^9 * 5)
+Ciclos(8) = (5,18 * 10^9 / 5,60) + (15,36 * 10^9 / 5,60) + (1,28 * 10^9)
+Ciclos(8) = 4,95 * 10^9
+
+T(8) = 4,95 * 10^9 / (2,00 * 10^9)
+T(8) = 2,474
+Impacto de +0,231 segundos
+
+c)
+
+Ciclos(1) = (2,59 * 10^9 * 1) + (1,28 * 10^9 * c) + (0,256 * 10^9 * 5) = 7,69 * 10^9
+2,59 * 10^9 + 1,28 * 10^9 + 1,28c * 10^9 = 7,69 * 10^9
+3,87 * 10^9 + 1,28c * 10^9 = 7,69 * 10^9
+1,28c * 10^9 = 7,69 * 10^9 - 3,87 * 10^9
+1,28c * 10^9 = 3,82 * 10^9
+1,28c = 3,82
+c = 3,82 / 1,28
+c = 2,984375
+
+Para que o desempenho monoprocessado seja igual ao desempenho com 4 núcleos, o CPI das instruções de L/S deve ser reduzido de 12 para 2,984375.
+
+6.
+
+T = Ciclos / Clock
+Ciclos = Somatório(IC-i * CPI-i)
+
+Ciclos = (50 * 10^6 * 1) + (110 * 10^6 * 1) + (80 * 10^6 * 4) + (16 * 10^6 * 2)
+Ciclos = 512 * 10^6
+
+T = 0,512 * 10^9 / (2,00 * 10^9)
+T = 0,256
+
+a)
+
+Ciclos = (50 * 10^6 * c) + (110 * 10^6 * 1) + (80 * 10^6 * 4) + (16 * 10^6 * 2) = 512 * 10^6 / 2
+50c * 10^6 + 462 * 10^6 = 256 * 10^6
+50c = 256 - 462
+50c = -206
+c = -206 / 50
+c = -4,12
+
+Não existe nenhum ganho viável no CPI de instruções FP para dobrar o desempenho.
+
+b)
+
+Ciclos = (50 * 10^6 * 1) + (110 * 10^6 * 1) + (80 * 10^6 * c) + (16 * 10^6 * 2) = 512 * 10^6 / 2
+192 * 10^6 + 80c * 10^6 = 256 * 10^6
+80c = 256 - 192
+80c = 64
+c = 64/80
+c = 0,8
+
+O CPI de instruções L/S deve passar de 4 para 0,8, o que representa uma redução de 3,2 ciclos por instrução.
+
+c)
+
+Ciclos = (50 * 10^6 * 1 * 0,60) + (110 * 10^6 * 1 * 0,60) + (80 * 10^6 * 4 * 0,70) + (16 * 10^6 * 2 * 0,70)
+Ciclos = 30 * 10^6 + 66 * 10^6 + 224 * 10^6 + 22,40 * 10^6
+Ciclos = 342,40 * 10^6
+
+T = 342,40 * 10^6 / (2,00 * 10^9)
+T = 0,1712
+
+O ganho seria de -0,0848 segundos.
+
+7.
+
+O processador e a memória se comunicam por meio de um canal chamado barramento. Ao longo do tempo, os processadores ficaram muito rápidos, mas as memórias não acompanharam o ritmo.
+Desta forma, o processador executa as tarefas mais rápido do que o barramento consegue transportar as instruções, ocasionando um tempo ocioso do processador. A memória cache 
+é a solução para esse gargalo pois ela conta com a presivibilidade de um programa. Os principais fatores são:
+
+- A proximidade com o chip do processador, evitando o uso do barramento;
+- Variáveis muito utilizadas são armazenadas na memória cache para que não seja necessário acessar a memória novamente;
+- Endereços da memória do computador são copiadas em blocos para a memória cache, tentando prever que endereços próximos ao endereço acessado serão utilizados.
+
+8.
+
+O registrador PC armazena o endereço de memória da próxima instrução que o processador deve buscar para executar.
+O registrador IR armazena os bits da própria instrução que está sendo executada no momento.
+A atualização do PC ocorre em duas situações distintas: execução sequencial e desvios.
+Para execução sequencial, logo após o IR armazenar a instrução, o PC é incrementado para a instrução seguinte.
+Em casos de desvio, o PC é atualizado com o endereço de destino da instrução que será executada após o desvio.
