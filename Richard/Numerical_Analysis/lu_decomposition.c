@@ -156,6 +156,7 @@ int main(int argc, char* argv[]) {
         printf("x[%d] = %lf\n", i + 1, solution[i]);
 
     free(solution);
+    free(P);
     free_system(A, b, n);
 
     return 0;
