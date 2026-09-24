@@ -1,20 +1,7 @@
 # UERJ - Projects, Reasearchs and Homeworks
 
-Repository to save the projects, researchs and homeworks for university. Owners: Richard Gonçalves and Daniel Quintão.
+Repository to save the projects, researchs and homeworks for university.
 
-## Richard Folder Owner
+## Have a question or idea?
 
-Richard Gonçalves: 
-
-- [GitHub](https://github.com/drahciry)
-- [LinkedIn](https://linkedin.com/in/drahciry/)
-
-## Daniel Folder Owner
-
-Daniel Quintão:
-
-- [GitHub](https://github.com/quintaodaniel)
-
-## Have a question?
-
-Contact us to ask or give a improviment idea.
+Contact me to ask or give a improviment idea.
